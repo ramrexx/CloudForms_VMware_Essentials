@@ -11,12 +11,12 @@ wait_for_ip_address: "{{ vcenter_wait_for_ip_address | default(true) }}"
 validate_certs: "{{ vcenter_validate_certs | default(false) }}"
 
 # vm guest parameters
-vm_names: 
+vm_names:
 memory_mb: "{{ vm_memory_mb | default(1024) }}"
 num_cpus: "{{ vm_num_cpus | default(1) }}"
 notes: "{{ vm_notes | default('Provisioned by CloudForms via Ansible') }}"
 domain: "{{ vm_domain }}"
 vlan: "{{ vm_vlan }}"
 
-# enable debugging
+# enable extra debugging
 verbose: false

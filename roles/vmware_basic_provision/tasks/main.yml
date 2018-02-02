@@ -24,13 +24,12 @@
   register: vmware_created_vms
 
 - name: Log item.instance.ipv4
-  debug: 
+  debug:
     var: item.instance.ipv4
   with_items: "{{ vmware_created_vms.results }}"
-  when: verbose
 
 - name: Add newwms to a group
-  add_host: 
+  add_host:
     name: "{{ item.instance.ipv4 }}"
     groups: vmware_hosts
   with_items: "{{ vmware_created_vms.results }}"

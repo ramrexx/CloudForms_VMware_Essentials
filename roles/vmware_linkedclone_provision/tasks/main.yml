@@ -21,8 +21,8 @@
       - name: "{{ vlan }}"
         device_type: vmxnet3
         type: dhcp
-        # ip: 
-        # netmask: 
+        # ip:
+        # netmask:
         # mac:
         # gateway:
         # dns_servers: # DNS servers for this network interface (Windows)
@@ -42,14 +42,12 @@
   with_items: "{{ vmware_created_vms_async.results }}"
 
 - name: Log item.instance.ipv4
-  debug: 
+  debug:
     var: item.instance.ipv4
   with_items: "{{ vmware_created_vms.results }}"
-  when: verbose
 
 - name: Add vmware_created_vms ip address to a vmware_hosts group
-  add_host: 
+  add_host:
     name: "{{ item.instance.ipv4 }}"
     groups: vmware_hosts
   with_items: "{{ vmware_created_vms.results }}"
-

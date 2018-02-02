@@ -5,3 +5,6 @@ tag: retire_full
 miq_creds: "{{ miq_credentials | default('Basic YWRtaW46c21hcnR2bQ==') }}"
 max_retries: 10
 retry_interval: 10
+
+# enable extra debugging
+verbose: false

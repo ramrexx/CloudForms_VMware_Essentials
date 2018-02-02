@@ -1,10 +1,11 @@
 ---
 - name: Generating VM name(s)
-  set_fact: 
+  set_fact:
     vm_names: "{{ vm_names + [ item ] }}"
   with_sequence: start=1 end="{{ count }}" format="{{ name_format }}"
 
-- debug: var=vm_names
-  when: verbose
+- name: Log item.instance.ipv4
+  debug:
+    var: vm_names
 
 # Add your own plays here

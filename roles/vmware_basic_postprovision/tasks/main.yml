@@ -49,6 +49,7 @@
 #     var: svc_url
 #   when: verbose
 #
+#
 # - name: Append resource href to vms list
 #   set_fact:
 #     vms: "{{ vms }} + [ { 'href': svc_url, 'resource': { 'href': '/api/vms/{{ item.json.resources[0].id }}' } } ]"
@@ -79,7 +80,7 @@
 #   debug:
 #     var: add_output.json.results[0].success
 #   when: verbose
-
+#
 # - name: Check if the VM was successfully attached to service
 #   fail: msg="{{ add_output.json.results[0].message }}"
 #   when: add_output.json.results[0].success == false
