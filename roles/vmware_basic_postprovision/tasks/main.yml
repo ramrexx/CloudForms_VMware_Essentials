@@ -8,81 +8,81 @@
         - "{{ item.instance.hw_product_uuid }}"
       provider:
         id: 2
-  register: service_linking_output
+  register: add_provider_vms_output
   with_items: "{{ vmware_created_vms.results }}"
 
-- name: Log service_linking_output
-  debug: 
-    var: service_linking_output
+- name: Log add_provider_vms_output
+  debug:
+    var: add_provider_vms_output
   when: verbose
 
-- name: Lookup CloudForms VM via uid_ems
-  uri:
-    url: "{{ manageiq.api_url }}/api/vms?filter[]=uid_ems={{ item.instance.hw_product_uuid }}&expand=resources"
-    method: GET
-    body:
-      action: refresh
-    body_format: json
-    validate_certs: false
-    headers:
-      Authorization: "{{ miq_creds }}"
-      # X-Auth-Token: "{{ manageiq.api_token }}"
-      Content-Type: "application/json"
-    status_code: 200
-  register: lookup_vms_output
-  until: lookup_vms_output.json.subcount > 0
-  retries: "{{ max_retries }}"
-  delay: "{{ retry_interval }}"
-  with_items: "{{ vmware_created_vms.results }}"
+# - name: Lookup CloudForms VM via uid_ems
+#   uri:
+#     url: "{{ manageiq.api_url }}/api/vms?filter[]=uid_ems={{ item.instance.hw_product_uuid }}&expand=resources"
+#     method: GET
+#     body:
+#       action: refresh
+#     body_format: json
+#     validate_certs: false
+#     headers:
+#       Authorization: "{{ miq_creds }}"
+#       # X-Auth-Token: "{{ manageiq.api_token }}"
+#       Content-Type: "application/json"
+#     status_code: 200
+#   register: lookup_vms_output
+#   until: lookup_vms_output.json.subcount > 0
+#   retries: "{{ max_retries }}"
+#   delay: "{{ retry_interval }}"
+#   with_items: "{{ vmware_created_vms.results }}"
+#
+# - name: Log lookup_vms_output.results
+#   debug:
+#     var: lookup_vms_output.results
+#   when: verbose
 
-- name: Log lookup_vms_output.results
-  debug: 
-    var: lookup_vms_output.results
-  when: verbose
+# - name: Set the service URL
+#   set_fact:
+#     svc_url: "/api/{{ manageiq.service }}"
+#
+# - name: Log svc_url
+#   debug:
+#     var: svc_url
+#   when: verbose
+#
+# - name: Append resource href to vms list
+#   set_fact:
+#     vms: "{{ vms }} + [ { 'href': svc_url, 'resource': { 'href': '/api/vms/{{ item.json.resources[0].id }}' } } ]"
+#   with_items: "{{ lookup_vms_output.results }}"
+#
+# - name: Log vms
+#   debug:
+#     var: vms
+#   when: verbose
+#
+# - name: Add vms to the service
+#   uri:
+#     url: "{{ manageiq.api_url }}/api/services"
+#     method: POST
+#     body_format: json
+#     body:
+#       action: add_resource
+#       resources: "{{ vms }}"
+#     validate_certs: false
+#     headers:
+#       Authorization: "{{ miq_creds }}"
+#       # X-Auth-Token: "{{ manageiq.api_token }}"
+#       Content-Type: "application/json"
+#     status_code: 200
+#   register: add_output
 
-- name: Set the service URL
-  set_fact:
-    svc_url: "/api/{{ manageiq.service }}"
+# - name: Log add_output.json.results[0].success
+#   debug:
+#     var: add_output.json.results[0].success
+#   when: verbose
 
-- name: Log svc_url
-  debug: 
-    var: svc_url
-  when: verbose
-
-- name: Append resource href to vms list
-  set_fact:
-    vms: "{{ vms }} + [ { 'href': svc_url, 'resource': { 'href': '/api/vms/{{ item.json.resources[0].id }}' } } ]"
-  with_items: "{{ lookup_vms_output.results }}"
-
-- name: Log vms
-  debug: 
-    var: vms
-  when: verbose
-
-- name: Add vms to the service
-  uri:
-    url: "{{ manageiq.api_url }}/api/services"
-    method: POST
-    body_format: json
-    body:
-      action: add_resource
-      resources: "{{ vms }}"
-    validate_certs: false
-    headers:
-      Authorization: "{{ miq_creds }}"
-      # X-Auth-Token: "{{ manageiq.api_token }}"
-      Content-Type: "application/json"
-    status_code: 200
-  register: add_output
-
-- name: Log add_output.json.results[0].success
-  debug: 
-    var: add_output.json.results[0].success
-  when: verbose
-  
-- name: Check if the VM was successfully attached to service
-  fail: msg="{{ add_output.json.results[0].message }}"
-  when: add_output.json.results[0].success == false
+# - name: Check if the VM was successfully attached to service
+#   fail: msg="{{ add_output.json.results[0].message }}"
+#   when: add_output.json.results[0].success == false
 
 - name: Assign tag to CloudForms service "{{ category }}:{{ tag }}"
   uri:
@@ -91,7 +91,7 @@
     body_format: json
     body:
       action: assign
-      resources: 
+      resources:
         - category: "{{ category }}"
           name: "{{ tag }}"
     validate_certs: false
@@ -103,7 +103,7 @@
   register: tag_service_output
 
 - name: Log tag_service_output
-  debug: 
+  debug:
     var: tag_service_output
   when: verbose
 
@@ -113,9 +113,9 @@
     method: POST
     body:
       action: assign
-      resources: 
+      resources:
         - category: "{{ category }}"
-          name: "{{ tag }}"      
+          name: "{{ tag }}"
     body_format: json
     validate_certs: false
     headers:
@@ -127,7 +127,7 @@
   with_items: "{{ lookup_vms_output.results }}"
 
 - name: Log assign_vmtag_output.results
-  debug: 
+  debug:
     var: assign_vmtag_output.results
   when: verbose
 
@@ -144,7 +144,7 @@
   register: lookup_user_output
 
 - name: Log lookup_user_output
-  debug: 
+  debug:
     var: lookup_user_output
   when: verbose
 
@@ -153,7 +153,7 @@
     userid: "{{ lookup_user_output.json.userid }}"
 
 - name: Log userid
-  debug: 
+  debug:
     var: userid
   when: verbose
 
@@ -163,7 +163,7 @@
     method: POST
     body:
       action: set_owner
-      resource: 
+      resource:
         owner: "{{ userid }}"
     body_format: json
     validate_certs: false
@@ -176,8 +176,6 @@
   with_items: "{{ lookup_vms_output.results }}"
 
 - name: Log assign_cfowner_output
-  debug: 
+  debug:
     var: assign_cfowner_output
   when: verbose
-
-
