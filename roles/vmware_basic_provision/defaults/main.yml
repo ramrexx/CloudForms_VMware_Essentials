@@ -1,0 +1,22 @@
+---
+# vcenter parameters
+hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+username: "{{ lookup('env', 'VMWARE_USER') }}"
+password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+template: "{{ vcenter_template }}"
+datacenter: "{{ vcenter_datacenter }}"
+cluster: "{{ vcenter_cluster }}"
+folder: "{{ vcenter_folder | default('/vm/') }}"
+wait_for_ip_address: "{{ vcenter_wait_for_ip_address | default(true) }}"
+validate_certs: "{{ vcenter_validate_certs | default(false) }}"
+
+# vm guest parameters
+vm_names: 
+memory_mb: "{{ vm_memory_mb | default(1024) }}"
+num_cpus: "{{ vm_num_cpus | default(1) }}"
+notes: "{{ vm_notes | default('Provisioned by CloudForms via Ansible') }}"
+domain: "{{ vm_domain }}"
+vlan: "{{ vm_vlan }}"
+
+# enable debugging
+verbose: false

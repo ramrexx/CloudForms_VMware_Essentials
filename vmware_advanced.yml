@@ -1,0 +1,23 @@
+---
+- name: vmware_advanced
+  hosts: localhost
+  gather_facts: false
+      
+  roles:
+    - role: vmware_basic_preprovision
+      when: manageiq is defined
+
+    - role: vmware_basic_vmname
+
+    - role: vmware_advanced_provision
+
+    - role: vmware_basic_postprovision
+      when: vmware_created_vms is defined and manageiq is defined
+
+- name: Perform tasks on instances
+  hosts: vmware_hosts
+  #become: true
+  #gather_facts: false
+
+  roles:
+    - role: vmware_basic_runonce

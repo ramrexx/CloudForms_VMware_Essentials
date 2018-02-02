@@ -1,0 +1,34 @@
+---
+- name: Provision VMware Instances
+  vmware_guest:
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: "{{ validate_certs }}"
+    name: "{{ item }}"
+    template: "{{ template }}"
+    datacenter: "{{ datacenter }}"
+    cluster: "{{ cluster }}"
+    folder: "{{ folder }}"
+    notes: "{{ notes }}"
+    # disk: "{{ disks }}"
+    hardware:
+      memory_mb: "{{ memory_mb }}"
+      num_cpus: "{{ num_cpus }}"
+    wait_for_ip_address: "{{ wait_for_ip_address }}"
+    networks: "{{ vm_networks }}"
+    state: poweredon
+  with_items: "{{ vm_names }}"
+  register: vmware_created_vms
+
+- name: Log item.instance.ipv4
+  debug: 
+    var: item.instance.ipv4
+  with_items: "{{ vmware_created_vms.results }}"
+  when: verbose
+
+- name: Add newwms to a group
+  add_host: 
+    name: "{{ item.instance.ipv4 }}"
+    groups: vmware_hosts
+  with_items: "{{ vmware_created_vms.results }}"
