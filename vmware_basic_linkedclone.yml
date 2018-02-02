@@ -4,15 +4,15 @@
   gather_facts: false
 
   roles:
+    - role: syncrou.manageiq-vmdb
+
     - role: vmware_basic_preprovision
       when: manageiq is defined
 
     - role: vmware_basic_vmname
-    
+
     - role: vmware_linkedclone_provision
 
-    - role: syncrou.manageiq-vmdb
-      
     - role: vmware_basic_postprovision
       when: vmware_created_vms is defined and manageiq is defined
 
