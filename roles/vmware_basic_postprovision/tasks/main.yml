@@ -34,7 +34,7 @@
       action: add_resource
       resource:
         href: "/api/vms/{{ item.json.resources[0].id }}"
-    validate_certs: false
+    validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
     status_code: 200
