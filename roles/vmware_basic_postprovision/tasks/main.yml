@@ -28,7 +28,7 @@
       resources:
         - category: "{{ retirement_category }}"
           name: "{{ retirement_tag }}"
-    validate_certs: false
+    validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
     # headers:
@@ -54,7 +54,7 @@
         - category: "{{ retirement_category }}"
           name: "{{ retirement_tag }}"
     body_format: json
-    validate_certs: false
+    validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
     # headers:
@@ -75,7 +75,7 @@
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.user }}?attributes=userid"
     method: GET
-    validate_certs: false
+    validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
     # headers:

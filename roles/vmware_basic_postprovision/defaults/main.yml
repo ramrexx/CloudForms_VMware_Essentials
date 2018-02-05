@@ -18,14 +18,10 @@ manageiq_password: !vault |
       37356636613966396362616232303732643562613662383333653934373665353836666430383464
       6131396261623135390a383166623734363364333563313361353031613439323734656634346630
       3332
+manageiq_validate_certs: false
 
 # Needed for the manageiq_vmdb role which requires privileged manageiq user and password
 provider_id: 2
-manageiq_connection:
-    url: "{{ manageiq.api_url }}"
-    username: "{{ manageiq_user }}"
-    password: "{{ manageiq_password }}"
-    manageiq_validate_certs: False
 
 # enable extra debugging
 verbose: false
