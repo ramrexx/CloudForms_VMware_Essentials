@@ -1,5 +1,6 @@
 ---
-- name: Service Linking via an href slug
+# add the new vms to the manageiq service
+- name: Service linking via an href slug
   manageiq_vmdb:
     href: "href_slug::{{ manageiq.service }}"
     action: add_provider_vms
@@ -16,7 +17,8 @@
     var: add_provider_vms_output
   when: verbose
 
-- name: Assign tag to CloudForms service "{{ category }}:{{ tag }}"
+# add retirement lifecycle tags to the manageiq service
+- name: Assign retirement tag to manageiq service "{{ retirement_category }}:{{ retirement_tag }}"
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/tags"
     method: POST
@@ -24,8 +26,8 @@
     body:
       action: assign
       resources:
-        - category: "{{ category }}"
-          name: "{{ tag }}"
+        - category: "{{ retirement_category }}"
+          name: "{{ retirement_tag }}"
     validate_certs: false
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
@@ -41,15 +43,16 @@
     var: tag_service_output
   when: verbose
 
-- name: Assign CF tag to VM
+# add retirement lifecycle tags to the new manageiq vms
+- name: Assign retirement tag to VM(s) "{{ retirement_category }}:{{ retirement_tag }}"
   uri:
     url: "{{ manageiq.api_url }}/api/vms/{{ item.json.resources[0].id }}/tags"
     method: POST
     body:
       action: assign
       resources:
-        - category: "{{ category }}"
-          name: "{{ tag }}"
+        - category: "{{ retirement_category }}"
+          name: "{{ retirement_tag }}"
     body_format: json
     validate_certs: false
     user: "{{ manageiq_user }}"
@@ -67,7 +70,8 @@
     var: assign_vmtag_output.results
   when: verbose
 
-- name: Lookup CloudForms userid
+# lookup the the manageiq userid so that we can assign ownership
+- name: Lookup manageiq userid
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.user }}?attributes=userid"
     method: GET
@@ -86,7 +90,7 @@
     var: lookup_user_output
   when: verbose
 
-- name: Setting CloudForms userid
+- name: Setting userid fact
   set_fact:
     userid: "{{ lookup_user_output.json.userid }}"
 
@@ -95,7 +99,8 @@
     var: userid
   when: verbose
 
-- name: Assign CloudForms userid to VM
+# assign ownership to new manageiq vms
+- name: Assign userid ownership to the new vms
   uri:
     url: "{{ item.json.resources[0].href }}"
     method: POST

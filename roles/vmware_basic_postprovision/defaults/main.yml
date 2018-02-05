@@ -1,7 +1,7 @@
 ---
 # retirement tags for the service and vms
-category: lifecycle
-tag: retire_full
+retirement_category: lifecycle
+retirement_tag: retire_full
 
 # privileged manageiq user and password needed to post provision tasks
 manageiq_user: !vault |
