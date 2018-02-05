@@ -1,16 +1,15 @@
 ---
+# initialize empty array
+vms: []
+
 # retirement tags for the service and vms
 retirement_category: lifecycle
 retirement_tag: retire_full
 
-# privileged manageiq user and password needed to post provision tasks
-manageiq_user: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      37613466383864356461313639343462626164356562663638306461323863386533623835346639
-      6538613338343864346634643533336530393035316336630a366533396332366261316232613730
-      38313065343630343662363630626133363636396336643663316164306464393932633064363337
-      3936666637636666630a653031353061333836396463346639343163656634316635346634663633
-      6262
+### privileged credentials needed for post provision tasks ###
+manageiq_user: admin
+# Run the following to generate your own vaulted password string and replace the contents of manageiq_password:
+# ansible-vault encrypt_string mypassword
 manageiq_password: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       39353262326337383861663337303037393033653265313435303263386661373162353832613434
@@ -18,14 +17,9 @@ manageiq_password: !vault |
       37356636613966396362616232303732643562613662383333653934373665353836666430383464
       6131396261623135390a383166623734363364333563313361353031613439323734656634346630
       3332
-manageiq_validate_certs: false
 
-# Needed for the manageiq_vmdb role which requires privileged manageiq user and password
-provider_id: 2
-manageiq_connection:
-    url: "{{ manageiq.api_url }}"
-    username: "{{ manageiq_user }}"
-    password: "{{ manageiq_password }}"
+# turn ssl verify off
+manageiq_validate_certs: false
 
 # enable extra debugging
 verbose: false

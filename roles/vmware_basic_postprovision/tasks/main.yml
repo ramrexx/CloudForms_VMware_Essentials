@@ -1,24 +1,56 @@
 ---
-# add the new vms to the manageiq service
-- name: Service linking via an href slug
-  manageiq_vmdb:
-    href: "href_slug::{{ manageiq.service }}"
-    action: add_provider_vms
-    data:
-      uid_ems:
-        - "{{ item.instance.hw_product_uuid }}"
-      provider:
-        id: "{{ provider_id }}"
-  register: add_provider_vms_output
+- name: Lookup vms via uid_ems
+  uri:
+    url: "{{ manageiq.api_url }}/api/vms?filter[]=uid_ems={{ item.instance.hw_product_uuid }}&expand=resources"
+    method: GET
+    body:
+      action: refresh
+    body_format: json
+    validate_certs: "{{ manageiq_validate_certs }}"
+    user: "{{ manageiq_user }}"
+    password: "{{ manageiq_password }}"
+    # headers:
+      # Authorization: "{{ miq_creds }}"
+      # X-Auth-Token: "{{ manageiq.api_token }}"
+      # Content-Type: "application/json"
+    status_code: 200
+  register: lookup_vms_output
+  until: lookup_vms_output.json.subcount > 0
+  retries: "{{ max_retries }}"
+  delay: "{{ retry_interval }}"
   with_items: "{{ vmware_created_vms.results }}"
 
-- name: Log add_provider_vms_output
+- name: Log lookup_vms_output.results
   debug:
-    var: add_provider_vms_output
+    var: lookup_vms_output.results
   when: verbose
 
-# add retirement lifecycle tags to the manageiq service
-- name: Assign retirement tag to manageiq service "{{ retirement_category }}:{{ retirement_tag }}"
+- name: Add new vms to service
+  uri:
+    url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}"
+    method: POST
+    body_format: json
+    body:
+      action: add_resource
+      resource:
+        href: "/api/vms/{{ item.json.resources[0].id }}"
+    validate_certs: false
+    user: "{{ manageiq_user }}"
+    password: "{{ manageiq_password }}"
+    status_code: 200
+  register: add_output
+  with_items: "{{ lookup_vms_output.results }}"
+
+- name: Log add_output.json.results[0].success
+  debug:
+    var: add_output.json.results[0].success
+  when: verbose
+
+- name: Check if the VMs were successfully attached to service
+  fail: msg="{{ add_output.json.results[0].message }}"
+  when: add_output.json.results[0].success == false
+
+- name: Assign retirement tag "{{ retirement_category }}:{{ retirement_tag }}" to service
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}/tags"
     method: POST
@@ -31,10 +63,6 @@
     validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
-    # headers:
-      # Authorization: "{{ miq_creds }}"
-      # X-Auth-Token: "{{ manageiq.api_token }}"
-      # Content-Type: "application/json"
     status_code: 200
   register: tag_service_output
 
@@ -43,8 +71,7 @@
     var: tag_service_output
   when: verbose
 
-# add retirement lifecycle tags to the new manageiq vms
-- name: Assign retirement tag to VM(s) "{{ retirement_category }}:{{ retirement_tag }}"
+- name: Assign retirement tag "{{ retirement_category }}:{{ retirement_tag }}" to VMs
   uri:
     url: "{{ manageiq.api_url }}/api/vms/{{ item.json.resources[0].id }}/tags"
     method: POST
@@ -57,10 +84,6 @@
     validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
-    # headers:
-      # Authorization: "{{ miq_creds }}"
-      # X-Auth-Token: "{{ manageiq.api_token }}"
-      # Content-Type: "application/json"
     status_code: 200
   register: assign_vmtag_output
   with_items: "{{ lookup_vms_output.results }}"
@@ -70,18 +93,13 @@
     var: assign_vmtag_output.results
   when: verbose
 
-# lookup the the manageiq userid so that we can assign ownership
-- name: Lookup manageiq userid
+- name: Lookup the userid so that we can assign ownership
   uri:
     url: "{{ manageiq.api_url }}/api/{{ manageiq.user }}?attributes=userid"
     method: GET
     validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
-    # headers:
-    #   Authorization: "{{ miq_creds }}"
-      # X-Auth-Token: "{{ manageiq.api_token }}"
-      # Content-Type: "application/json"
     status_code: 200
   register: lookup_user_output
 
@@ -99,8 +117,7 @@
     var: userid
   when: verbose
 
-# assign ownership to new manageiq vms
-- name: Assign userid ownership to the new vms
+- name: Assign ownership "{{ userid }}" to the new vms
   uri:
     url: "{{ item.json.resources[0].href }}"
     method: POST
@@ -109,13 +126,9 @@
       resource:
         owner: "{{ userid }}"
     body_format: json
-    validate_certs: false
+    validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
-    # headers:
-    #   Authorization: "{{ miq_creds }}"
-      # X-Auth-Token: "{{ manageiq.api_token }}"
-      # Content-Type: "application/json"
     status_code: 200
   register: assign_cfowner_output
   with_items: "{{ lookup_vms_output.results }}"
