@@ -25,7 +25,7 @@ manageiq_connection:
     url: "{{ manageiq.api_url }}"
     username: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
-    manageiq_validate_certs: false
+    manageiq_validate_certs: False
 
 # enable extra debugging
 verbose: false
