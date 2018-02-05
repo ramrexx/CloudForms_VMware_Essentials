@@ -22,6 +22,10 @@ manageiq_validate_certs: false
 
 # Needed for the manageiq_vmdb role which requires privileged manageiq user and password
 provider_id: 2
+manageiq_connection:
+    url: "{{ manageiq.api_url }}"
+    username: "{{ manageiq_user }}"
+    password: "{{ manageiq_password }}"
 
 # enable extra debugging
 verbose: false
