@@ -4,8 +4,6 @@
   gather_facts: false
 
   roles:
-    - role: syncrou.manageiq-vmdb
-
     - role: vmware_basic_preprovision
       when: manageiq is defined
 

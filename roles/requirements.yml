@@ -1,4 +1,0 @@
----
-# ansible requirements.yml file(s) MUST live in the top level roles folder of
-# the repo
-- src: syncrou.manageiq-vmdb
