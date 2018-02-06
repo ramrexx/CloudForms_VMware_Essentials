@@ -9,10 +9,6 @@
     validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
-    # headers:
-      # Authorization: "{{ miq_creds }}"
-      # X-Auth-Token: "{{ manageiq.api_token }}"
-      # Content-Type: "application/json"
     status_code: 200
   register: lookup_vms_output
   until: lookup_vms_output.json.subcount > 0
@@ -25,28 +21,45 @@
     var: lookup_vms_output.results
   when: verbose
 
+- name: Set the svc_url
+  set_fact:
+    svc_url: "/api/{{ manageiq.service }}"
+
+- name: Log svc_url
+  debug:
+    var: svc_url
+  when: verbose
+
+- name: Append resource href to vms list
+  set_fact:
+    vms: "{{ vms }} + [ { 'href': svc_url, 'resource': { 'href': '/api/vms/{{ item.json.resources[0].id }}' } } ]"
+  with_items: "{{ lookup_vms_output.results }}"
+
+- name: Log vms
+  debug:
+    var: vms
+  when: verbose
+
 - name: Add new vms to service
   uri:
-    url: "{{ manageiq.api_url }}/api/{{ manageiq.service }}"
+    url: "{{ manageiq.api_url }}/api/services"
     method: POST
     body_format: json
     body:
       action: add_resource
-      resource:
-        href: "/api/vms/{{ item.json.resources[0].id }}"
+      resources: "{{ vms }}"
     validate_certs: "{{ manageiq_validate_certs }}"
     user: "{{ manageiq_user }}"
     password: "{{ manageiq_password }}"
     status_code: 200
   register: add_output
-  with_items: "{{ lookup_vms_output.results }}"
 
 - name: Log add_output.json.results[0].success
   debug:
     var: add_output.json.results[0].success
   when: verbose
 
-- name: Check if the VMs were successfully attached to service
+- name: Check if the vms were successfully attached to service
   fail: msg="{{ add_output.json.results[0].message }}"
   when: add_output.json.results[0].success == false
 
