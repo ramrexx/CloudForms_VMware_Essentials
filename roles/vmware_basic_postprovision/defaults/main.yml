@@ -2,6 +2,10 @@
 # initialize empty array
 vms: []
 
+# setup retry variables
+max_retries: 10
+retry_interval: 10
+
 # retirement tags for the service and vms
 retirement_category: lifecycle
 retirement_tag: retire_full
