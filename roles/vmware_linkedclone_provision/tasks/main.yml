@@ -2,7 +2,7 @@
 - name: Check snapshot variable, if exists set linked_clone to true
   set_fact:
     linked_clone: true
-  when: snapshot is defined
+  when: snapshot_src is defined
 
 - name: Provision vmware instances asynchronously
   vmware_guest:
@@ -15,7 +15,7 @@
     datacenter: "{{ datacenter }}"
     cluster: "{{ cluster }}"
     folder: "{{ folder }}"
-    snapshot_src: "{{ snapshot }}"
+    snapshot_src: "{{ snapshot_src }}"
     linked_clone: "{{ linked_clone }}"
     notes: "{{ notes }}"
     hardware:

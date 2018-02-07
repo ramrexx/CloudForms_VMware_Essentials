@@ -37,7 +37,7 @@ vm_networks:
     #   - "{{ network_0_dns_1_server }}"
 
 # linked clone parameter
-snapshot:
+snapshot_src:
 
 # enable extra debugging
 verbose: false
