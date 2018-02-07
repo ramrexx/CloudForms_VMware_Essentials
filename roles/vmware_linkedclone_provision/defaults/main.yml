@@ -6,16 +6,16 @@ password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
 template:
 datacenter:
 cluster:
-folder: "{{ vcenter_folder | default('/vm/Discovered virtual machine') }}"
+folder: "/vm/Discovered virtual machine"
 validate_certs: false
 
 # vm guest parameters
 vm_names:
-memory_mb: "{{ vm_memory_mb | default(1024) }}"
-num_cpus: "{{ vm_num_cpus | default(1) }}"
-notes: "{{ vm_notes | default('Provisioned by CloudForms via Ansible') }}"
-state: "{{ vm_state | default('poweredon') }}"
-wait_for_ip_address: "{{ vm_wait_for_ip_address | default(true) }}"
+memory_mb: 1024
+num_cpus: 1
+notes: Provisioned by CloudForms via Ansible Automation
+state: poweredon
+wait_for_ip_address: true
 
 # Networking parameters
 vm_networks:
@@ -25,16 +25,16 @@ vm_networks:
     # device_type - (e1000, e1000e, pcnet32, vmxnet2, vmxnet3)
     device_type: "{{ network_0_device_type | defaut('vmxnet3') }}"
 
-    # static network parameters
-    ip: "{{ network_0_ip }}"
-    netmask: "{{ network_0_netmask }}"
-    gateway: "{{ network_0_gateway }}"
-    mac: "{{ network_0_mac }}"
-    domain: "{{ network_0_dnsdomain }}"
-    # DNS servers for this network interface
-    dns_servers:
-      - "{{ network_0_dns_0_server }}"
-      - "{{ network_0_dns_1_server }}"
+    # # static network parameters
+    # ip: "{{ network_0_ip }}"
+    # netmask: "{{ network_0_netmask }}"
+    # gateway: "{{ network_0_gateway }}"
+    # mac: "{{ network_0_mac }}"
+    # domain: "{{ network_0_dnsdomain }}"
+    # # DNS servers for this network interface
+    # dns_servers:
+    #   - "{{ network_0_dns_0_server }}"
+    #   - "{{ network_0_dns_1_server }}"
 
 # linked clone parameters
 snapshot: "{{ vm_snapshot }}"
