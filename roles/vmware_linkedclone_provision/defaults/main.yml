@@ -23,7 +23,7 @@ vm_networks:
     # IP assignment (dhcp or static)
     type: "{{ network_0_type | default('dhcp') }}"
     # device_type - (e1000, e1000e, pcnet32, vmxnet2, vmxnet3)
-    device_type: "{{ network_0_device_type | defaut('vmxnet3') }}"
+    device_type: "{{ network_0_device_type | default('vmxnet3') }}"
 
     # # static network parameters
     # ip: "{{ network_0_ip }}"
