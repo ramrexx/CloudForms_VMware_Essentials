@@ -2,7 +2,7 @@
 - name: vmware_basic
   hosts: localhost
   gather_facts: false
-      
+
   roles:
     - role: vmware_basic_preprovision
       when: manageiq is defined
@@ -10,8 +10,6 @@
     - role: vmware_basic_vmname
 
     - role: vmware_basic_provision
-      tags: 
-        - appserver
 
     - role: vmware_basic_postprovision
       when: vmware_created_vms is defined and manageiq is defined

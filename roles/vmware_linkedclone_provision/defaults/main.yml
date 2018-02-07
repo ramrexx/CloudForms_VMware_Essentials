@@ -3,25 +3,41 @@
 hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
 username: "{{ lookup('env', 'VMWARE_USER') }}"
 password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
-template: "{{ vcenter_template }}"
-datacenter: "{{ vcenter_datacenter }}"
-cluster: "{{ vcenter_cluster }}"
-folder: "{{ vcenter_folder | default('/vm/') }}"
-wait_for_ip_address: "{{ vcenter_wait_for_ip_address | default(true) }}"
-validate_certs: "{{ vcenter_validate_certs | default(false) }}"
+template:
+datacenter:
+cluster:
+folder: "{{ vcenter_folder | default('/vm/Discovered virtual machine') }}"
+validate_certs: false
 
 # vm guest parameters
 vm_names:
 memory_mb: "{{ vm_memory_mb | default(1024) }}"
 num_cpus: "{{ vm_num_cpus | default(1) }}"
 notes: "{{ vm_notes | default('Provisioned by CloudForms via Ansible') }}"
-domain: "{{ vm_domain }}"
-dns_servers: "{{ vm_dns_servers }}"
-vlan: "{{ vm_vlan }}"
+state: "{{ vm_state | default('poweredon') }}"
+wait_for_ip_address: "{{ vm_wait_for_ip_address | default(true) }}"
+
+# Networking parameters
+vm_networks:
+  - name: "{{ network_0_vlan | default('VM Network') }}"
+    # IP assignment (dhcp or static)
+    type: "{{ network_0_type | default('dhcp') }}"
+    # device_type - (e1000, e1000e, pcnet32, vmxnet2, vmxnet3)
+    device_type: "{{ network_0_device_type | defaut('vmxnet3') }}"
+
+    # static network parameters
+    ip: "{{ network_0_ip }}"
+    netmask: "{{ network_0_netmask }}"
+    gateway: "{{ network_0_gateway }}"
+    mac: "{{ network_0_mac }}"
+    domain: "{{ network_0_dnsdomain }}"
+    # DNS servers for this network interface
+    dns_servers:
+      - "{{ network_0_dns_0_server }}"
+      - "{{ network_0_dns_1_server }}"
 
 # linked clone parameters
-snapshot: "{{ snapshot }}"
-linked_clone: "{{ linked_clone | defaut(true) }}"
+snapshot: "{{ vm_snapshot }}"
 
 # enable extra debugging
 verbose: false
