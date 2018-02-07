@@ -13,7 +13,7 @@ validate_certs: false
 vm_names:
 memory_mb: 1024
 num_cpus: 1
-notes: Provisioned by CloudForms via Ansible Automation
+notes: Provisioned via Ansible
 state: poweredon
 wait_for_ip_address: true
 
@@ -37,7 +37,7 @@ vm_networks:
     #   - "{{ network_0_dns_1_server }}"
 
 # linked clone parameters
-snapshot: "{{ vm_snapshot }}"
+snapshot: 
 
 # enable extra debugging
 verbose: false

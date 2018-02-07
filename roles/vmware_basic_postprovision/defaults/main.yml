@@ -3,7 +3,7 @@
 vms: []
 
 # setup retry variables
-max_retries: 10
+max_retries: 100
 retry_interval: 10
 
 # retirement tags for the service and vms
@@ -12,15 +12,16 @@ retirement_tag: retire_full
 
 ### privileged credentials needed for post provision tasks ###
 manageiq_user: admin
-# Run the following to generate your own vaulted password string and replace the contents of manageiq_password:
-# ansible-vault encrypt_string mypassword
+# Run the following to generate your own vaulted password string and replace the contents of
+# manageiq_password. You will need to include a the vault password in your credentials
+# i.e. ansible-vault encrypt_string smartvm
 manageiq_password: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      39353262326337383861663337303037393033653265313435303263386661373162353832613434
-      3739373465326538393033363261636130333761623666660a313563306530393336656463363466
-      37356636613966396362616232303732643562613662383333653934373665353836666430383464
-      6131396261623135390a383166623734363364333563313361353031613439323734656634346630
-      3332
+          $ANSIBLE_VAULT;1.1;AES256
+          33323664373132386239393262303032333630613637306237666666323761626462336531353463
+          6639393635346631353738326264356236303333383837630a383230313839613931643662366237
+          64353230636335386635333466663831316462356530663331643661336163663534303466663666
+          3234646233633036630a303738373230343331386131653234343430623335623130623265393864
+          6566
 
 # turn ssl verify off
 manageiq_validate_certs: false
