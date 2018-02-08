@@ -1,8 +1,8 @@
 ---
 # vcenter parameters
-hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
-username: "{{ lookup('env', 'VMWARE_USER') }}"
-password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+# hostname:
+# username:
+# password:
 template:
 datacenter:
 cluster:
@@ -53,7 +53,7 @@ customize:
 snapshot_src:
 
 # asynchronous parameters
-async: 3600 # wait up to an hour for cloning to complete
+async_wait: 3600
 async_poll: 0
 async_retries: 100
 

@@ -6,9 +6,9 @@
 
 - name: Provision instances asynchronously
   vmware_guest:
-    hostname: "{{ hostname }}"
-    username: "{{ username }}"
-    password: "{{ password }}"
+    hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+    username: "{{ lookup('env', 'VMWARE_USER') }}"
+    password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
     validate_certs: "{{ validate_certs }}"
     name: "{{ item }}"
     template: "{{ template }}"
@@ -28,7 +28,7 @@
   delegate_to: localhost
   with_items: "{{ vm_names }}"
   register: vmware_created_vms_async
-  async: "{{ async }}"
+  async: "{{ async_wait }}"
   poll: "{{ async_poll }}"
 
 - name: Wait for instance creation to complete
