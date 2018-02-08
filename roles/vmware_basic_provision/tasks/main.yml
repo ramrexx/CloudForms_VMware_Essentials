@@ -44,7 +44,7 @@
   with_items: "{{ vmware_created_vms.results }}"
   when: wait_for_ip_address
 
-- name: "Add {{ item.instance.hw_name }},{{ item.instance.ipv4 }} ip address to a vmware_hosts group"
+- name: "Add new vm ip addresses to a vmware_hosts group"
   add_host:
     name: "{{ item.instance.ipv4 }}"
     groups: vmware_hosts
