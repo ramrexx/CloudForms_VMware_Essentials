@@ -6,9 +6,9 @@
 
 - name: Provision instances asynchronously
   vmware_guest:
-    hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
-    username: "{{ lookup('env', 'VMWARE_USER') }}"
-    password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
     validate_certs: "{{ validate_certs }}"
     name: "{{ item }}"
     template: "{{ template }}"
@@ -44,7 +44,7 @@
   with_items: "{{ vmware_created_vms.results }}"
   when: wait_for_ip_address
 
-- name: "Add new vm ip addresses to a vmware_hosts group"
+- name: "Add {{ item.instance.hw_name }},{{ item.instance.ipv4 }} ip address to a vmware_hosts group"
   add_host:
     name: "{{ item.instance.ipv4 }}"
     groups: vmware_hosts
