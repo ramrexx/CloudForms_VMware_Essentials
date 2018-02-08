@@ -3,20 +3,59 @@
 hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
 username: "{{ lookup('env', 'VMWARE_USER') }}"
 password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
-template: "{{ vcenter_template }}"
-datacenter: "{{ vcenter_datacenter }}"
-cluster: "{{ vcenter_cluster }}"
-folder: "{{ vcenter_folder | default('/vm/') }}"
-wait_for_ip_address: "{{ vcenter_wait_for_ip_address | default(true) }}"
-validate_certs: "{{ vcenter_validate_certs | default(false) }}"
+template:
+datacenter:
+cluster:
+folder: "/vm/Discovered virtual machine"
+validate_certs: false
 
 # vm guest parameters
 vm_names:
-memory_mb: "{{ vm_memory_mb | default(1024) }}"
-num_cpus: "{{ vm_num_cpus | default(1) }}"
-notes: "{{ vm_notes | default('Provisioned by CloudForms via Ansible') }}"
-domain: "{{ vm_domain }}"
-vlan: "{{ vm_vlan }}"
+memory_mb: 1024
+num_cpus: 1
+notes: Provisioned via Ansible
+state: poweredon
+wait_for_ip_address: true
+
+## vm networking parameters
+vm_networks:
+  - name: "{{ network_0_vlan | default('VM Network') }}"
+    ### ip assignment (dhcp or static)
+    type: "{{ network_0_type | default('dhcp') }}"
+    ### device_type - (e1000, e1000e, pcnet32, vmxnet2, vmxnet3)
+    device_type: "{{ network_0_device_type | default('vmxnet3') }}"
+
+    # static network parameters
+    # ip: "{{ network_0_ip }}"
+    # netmask: "{{ network_0_netmask }}"
+    # gateway: "{{ network_0_gateway }}"
+    # mac: "{{ network_0_mac }}"
+    # domain: "{{ network_0_dnsdomain }}"
+
+    ### dns servers for this network interface
+    # dns_servers:
+    #   - "{{ network_0_dns_0_server }}"
+    #   - "{{ network_0_dns_1_server }}"
+
+## vm disk parameters
+disks:
+#   - size_gb: "{{ vm_disk_0_size_gb }}"
+#     type: "{{ vm_disk_0_type | default('thin') }}"
+#     datastore: "{{ vm_disk_0_datastore }}"
+#   - size_gb: "{{ vm_disk_1_size_gb }}"
+#     type: "{{ vm_disk_1_type | default('thin') }}"
+#     datastore: "{{ vm_disk_1datastore }}"
+
+## vm customization parameters
+customize:
+
+## vm linked clone parameter
+snapshot_src:
+
+# asynchronous parameters
+async: 3600 # wait up to an hour for cloning to complete
+async_poll: 0
+async_retries: 100
 
 # enable extra debugging
 verbose: false

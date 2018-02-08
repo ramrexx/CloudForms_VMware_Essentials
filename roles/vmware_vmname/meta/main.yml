@@ -1,10 +1,10 @@
 ---
 galaxy_info:
   author: ramrexx
-  description: CloudForms_Essentials - vmware_linkedclone_provision
-  company: 
+  description: CloudForms_VMware_Essentials - vmware_vmname
+  company:
   license: Apache
-  issue_tracker_url: 
+  issue_tracker_url:
   github_branch:
   min_ansible_version: 2.4
   platforms:
@@ -12,6 +12,7 @@ galaxy_info:
     versions:
       - 7
   categories:
+    - manageiq
     - cloudforms
     - vmware
 dependencies: []

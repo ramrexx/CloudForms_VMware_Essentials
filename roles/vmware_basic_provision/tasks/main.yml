@@ -1,5 +1,10 @@
 ---
-- name: Provision VMware Instances
+- name: Check snapshot_src variable, if exists set linked_clone to true
+  set_fact:
+    linked_clone: true
+  when: snapshot_src is defined
+
+- name: Provision instances asynchronously
   vmware_guest:
     hostname: "{{ hostname }}"
     username: "{{ username }}"
@@ -10,26 +15,38 @@
     datacenter: "{{ datacenter }}"
     cluster: "{{ cluster }}"
     folder: "{{ folder }}"
+    snapshot_src: "{{ snapshot_src }}"
+    linked_clone: "{{ linked_clone }}"
     notes: "{{ notes }}"
     hardware:
       memory_mb: "{{ memory_mb }}"
       num_cpus: "{{ num_cpus }}"
     wait_for_ip_address: "{{ wait_for_ip_address }}"
-    networks:
-      - name: "{{ vlan }}"
-        device_type: vmxnet3
-        type: dhcp
-    state: poweredon
+    networks: "{{ vm_networks }}"
+#   disk: "{{ disks }}"
+    state: "{{ state }}"
+  delegate_to: localhost
   with_items: "{{ vm_names }}"
+  register: vmware_created_vms_async
+  async: "{{ async }}"
+  poll: "{{ async_poll }}"
+
+- name: Wait for instance creation to complete
+  async_status: jid={{ item.ansible_job_id }}
   register: vmware_created_vms
+  until: vmware_created_vms.finished
+  retries: "{{ async_retries }}"
+  with_items: "{{ vmware_created_vms_async.results }}"
 
 - name: Log item.instance.ipv4
   debug:
     var: item.instance.ipv4
   with_items: "{{ vmware_created_vms.results }}"
+  when: wait_for_ip_address
 
-- name: Add newwms to a group
+- name: "Add {{ item.instance.hw_name }},{{ item.instance.ipv4 }} ip address to a vmware_hosts group"
   add_host:
     name: "{{ item.instance.ipv4 }}"
     groups: vmware_hosts
   with_items: "{{ vmware_created_vms.results }}"
+  when: wait_for_ip_address

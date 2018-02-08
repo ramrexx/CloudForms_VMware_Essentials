@@ -1,5 +1,5 @@
 ////
- README.adoc
+ provisioning.adoc
 -------------------------------------------------------------------------------
    Copyright 2018 Kevin Morey <kevin@redhat.com>
 
@@ -17,28 +17,11 @@
 -------------------------------------------------------------------------------
 ////
 
-= CloudForms_VMware_Essentials
+= VMware Provisioning
+This guide will walk you through setting up VMware provisioning via Ansible.
 
-This repo includes tools for managing VMware environments with ManageIQ/Red Hat
-CloudForms.
+== Installation
 
-Supported ManageIQ/CloudForms Version: *G-release/cf4.6*
+* <<Provisioning >>
 
-IMPORTANT: This repo is subject to frequent changes without warning.
-To avoid issues please **FORK** the repo.
-
-== Table of Contents
-
-* link:docs/provisioning.adoc[Provisioning]
-* <<Installation Steps>>
-* <<Contribute>>
-
-COMING SOON!
-
-<<top>>
-
-== Contribute
-
-Have an idea and want to help? Fork the repo and link:https://github.com/ramrexx/CloudForms_VMware_Essentials/pulls[Submit a pull request]
-
-<<top>>
+=== Provisioning

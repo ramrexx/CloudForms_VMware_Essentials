@@ -1,17 +1,17 @@
 ---
-- name: vmware_basic
+- name: vmware_basic_provisioning
   hosts: localhost
   gather_facts: false
 
   roles:
-    - role: vmware_basic_preprovision
+    - role: vmware_preprovision
       when: manageiq is defined
 
-    - role: vmware_basic_vmname
+    - role: vmware_vmname
 
     - role: vmware_basic_provision
 
-    - role: vmware_basic_postprovision
+    - role: vmware_postprovision
       when: vmware_created_vms is defined and manageiq is defined
 
 - name: Perform tasks on instances
@@ -20,4 +20,4 @@
   #gather_facts: false
 
   roles:
-    - role: vmware_basic_runonce
+    - role: vmware_runonce
