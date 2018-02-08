@@ -51,6 +51,7 @@ customization:
 
 ## vm linked clone parameter
 snapshot_src:
+linked_clone: false
 
 # asynchronous parameters
 async_wait: 3600

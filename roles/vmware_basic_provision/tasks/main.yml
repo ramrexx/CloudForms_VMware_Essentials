@@ -23,7 +23,7 @@
       num_cpus: "{{ num_cpus }}"
     wait_for_ip_address: "{{ wait_for_ip_address }}"
     networks: "{{ vm_networks }}"
-  # disk: "{{ disks }}"
+    disk: "{{ disks | default(omit) }}"
     state: "{{ state }}"
   delegate_to: localhost
   with_items: "{{ vm_names }}"
