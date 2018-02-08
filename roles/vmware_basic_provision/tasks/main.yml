@@ -1,9 +1,4 @@
 ---
-- name: Check snapshot_src variable, if exists set linked_clone to true
-  set_fact:
-    linked_clone: true
-  when: snapshot_src is defined
-
 - name: Provision instances asynchronously
   vmware_guest:
     hostname: "{{ hostname }}"
@@ -15,9 +10,9 @@
     datacenter: "{{ datacenter }}"
     cluster: "{{ cluster }}"
     folder: "{{ folder }}"
-    snapshot_src: "{{ snapshot_src }}"
-    linked_clone: "{{ linked_clone }}"
-    notes: "{{ notes }}"
+    snapshot_src: "{{ snapshot_src | default(omit) }}"
+    linked_clone: "{{ linked_clone | default(omit, true) }}"
+    notes: "{{ notes | default('omit') }}"
     hardware:
       memory_mb: "{{ memory_mb }}"
       num_cpus: "{{ num_cpus }}"
@@ -31,7 +26,7 @@
   async: "{{ async_wait }}"
   poll: "{{ async_poll }}"
 
-- name: Wait for instance creation to complete
+- name: Wait for asynchronous job to complete
   async_status: jid={{ item.ansible_job_id }}
   register: vmware_created_vms
   until: vmware_created_vms.finished
@@ -44,7 +39,7 @@
   with_items: "{{ vmware_created_vms.results }}"
   when: wait_for_ip_address
 
-- name: "Add new vm ip address to a vmware_hosts group"
+- name: "Add new vm ip addresses to vmware_hosts group"
   add_host:
     name: "{{ item.instance.ipv4 }}"
     groups: vmware_hosts
