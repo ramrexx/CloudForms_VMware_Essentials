@@ -47,7 +47,7 @@ disks:
 #     datastore: "{{ vm_disk_1datastore }}"
 
 ## vm customization parameters
-customize:
+customization:
 
 ## vm linked clone parameter
 snapshot_src:
