@@ -26,17 +26,17 @@ vm_networks:
     device_type: "{{ network_0_device_type | default('vmxnet3') }}"
 
     ### static network parameters
-    ip: "{{ network_0_ip | default(omit, true) }}"
-    netmask: "{{ network_0_netmask | default(omit, true) }}"
-    gateway: "{{ network_0_gateway | default(omit, true) }}"
-    mac: "{{ network_0_mac | default(omit, true) }}"
-    domain: "{{ network_0_dnsdomain | default(omit, true) }}"
-    dns_servers:
-      - "{{ network_0_dns_0_server | default(omit, true) }}"
-      - "{{ network_0_dns_1_server | default(omit, true) }}"
+    # ip: "{{ network_0_ip | default(omit, true) }}"
+    # netmask: "{{ network_0_netmask | default(omit, true) }}"
+    # gateway: "{{ network_0_gateway | default(omit, true) }}"
+    # mac: "{{ network_0_mac | default(omit, true) }}"
+    # domain: "{{ network_0_dnsdomain | default(omit, true) }}"
+    # dns_servers:
+    #   - "{{ network_0_dns_0_server | default(omit, true) }}"
+    #   - "{{ network_0_dns_1_server | default(omit, true) }}"
 
 ## vm disk parameters
-disks:
+# disks:
 #   - size_gb: "{{ vm_disk_0_size_gb }}"
 #     type: "{{ vm_disk_0_type | default('thin') }}"
 #     datastore: "{{ vm_disk_0_datastore }}"
@@ -45,7 +45,7 @@ disks:
 #     datastore: "{{ vm_disk_1datastore }}"
 
 ## vm customization parameters
-customization:
+# customizations:
 
 ## vm linked clone parameter
 snapshot_src:
