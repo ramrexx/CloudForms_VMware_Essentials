@@ -319,6 +319,51 @@
           ae_message:
           ae_attributes: {}
         dialog_field_responders: []
+      - name: param_linked_clone
+        description: linked clone enabled?
+        data_type: string
+        notes:
+        notes_display:
+        display: edit
+        display_method:
+        display_method_options: {}
+        required: true
+        required_method:
+        required_method_options: {}
+        default_value: True
+        values:
+        - - true
+          - True
+        - - false
+          - False
+        values_method:
+        values_method_options: {}
+        options:
+          :sort_by: description
+          :sort_order: ascending
+          :force_multi_value: false
+        label: Linked Clone?
+        position: 7
+        validator_type:
+        validator_rule:
+        reconfigurable:
+        dynamic: false
+        show_refresh_button:
+        load_values_on_init:
+        read_only: false
+        auto_refresh:
+        trigger_auto_refresh:
+        visible: true
+        type: DialogFieldDropDownList
+        resource_action:
+          action:
+          resource_type: DialogField
+          ae_namespace:
+          ae_class:
+          ae_instance:
+          ae_message:
+          ae_attributes: {}
+        dialog_field_responders: []
       - name: param_snapshot
         description: provide the name of the linked clone snapshot
         data_type: string
