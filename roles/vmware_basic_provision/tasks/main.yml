@@ -10,15 +10,15 @@
     datacenter: "{{ datacenter }}"
     cluster: "{{ cluster }}"
     folder: "{{ folder }}"
-    snapshot_src: "{{ snapshot_src | default(omit) }}"
+    snapshot_src: "{{ snapshot_src | default(omit, true) }}"
     linked_clone: "{{ linked_clone | default(omit, true) }}"
-    notes: "{{ notes | default('omit') }}"
+    notes: "{{ notes | default(omit, true) }}"
     hardware:
       memory_mb: "{{ memory_mb }}"
       num_cpus: "{{ num_cpus }}"
     wait_for_ip_address: "{{ wait_for_ip_address }}"
     networks: "{{ vm_networks }}"
-    disk: "{{ disks | default(omit) }}"
+    disk: "{{ disks | default(omit, true) }}"
     state: "{{ state }}"
   delegate_to: localhost
   with_items: "{{ vm_names }}"
