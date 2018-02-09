@@ -28,7 +28,7 @@
         required: true
         required_method:
         required_method_options: {}
-        default_value: Test
+        default_value: test
         values:
         - - dev
           - Development
@@ -107,7 +107,7 @@
           ae_attributes: {}
         dialog_field_responders: []
       - name: param_count
-        description: Choose number of Linked Clones to deploy
+        description: Choose number of VMs to deploy
         data_type: string
         notes:
         notes_display:
@@ -290,7 +290,9 @@
         default_value: Default
         values:
         - - "/vm/Discovered virtual machine"
-          - Default
+          - Discovered virtual machine
+        - - "/vm/DEMO"
+          - DEMO
         values_method:
         values_method_options: {}
         options:
@@ -330,7 +332,7 @@
         required: true
         required_method:
         required_method_options: {}
-        default_value: RHEL
+        default_value: r
         values:
         - - l
           - Linux
