@@ -3,11 +3,11 @@
 hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
 username: "{{ lookup('env', 'VMWARE_USER') }}"
 password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+validate_certs: false
 template:
 datacenter:
 cluster:
 folder: "/vm/Discovered virtual machine"
-validate_certs: false
 
 # vm guest parameters
 vm_names:
@@ -31,8 +31,6 @@ vm_networks:
     gateway: "{{ network_0_gateway | default(omit) }}"
     mac: "{{ network_0_mac | default(omit) }}"
     domain: "{{ network_0_dnsdomain | default(omit) }}"
-
-    ### dns servers for this network interface
     dns_servers:
       - "{{ network_0_dns_0_server | default(omit) }}"
       - "{{ network_0_dns_1_server | default(omit) }}"
