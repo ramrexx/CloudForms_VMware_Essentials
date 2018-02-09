@@ -37,7 +37,7 @@
   debug:
     var: item.instance.ipv4
   with_items: "{{ vmware_created_vms.results }}"
-  when: wait_for_ip_address
+  when: wait_for_ip_address and verbose
 
 - name: "Add new vm ip addresses to vmware_hosts group"
   add_host:
