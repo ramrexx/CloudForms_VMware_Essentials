@@ -1,4 +1,7 @@
 ---
+# For a full list of vmware_guest parameters, visit:
+# http://docs.ansible.com/ansible/latest/vmware_guest_module.html
+
 # vcenter parameters
 hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
 username: "{{ lookup('env', 'VMWARE_USER') }}"
