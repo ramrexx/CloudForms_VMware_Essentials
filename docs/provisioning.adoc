@@ -17,11 +17,29 @@
 -------------------------------------------------------------------------------
 ////
 
-= VMware Provisioning
-This guide will walk you through setting up VMware provisioning via Ansible.
+= vmware Basic Provisioning
+Provision VMware VMs via CloudForms with Ansible Automation.
 
-== Installation
+IMPORTANT: These instructions assume you have enabled the "*Embedded Ansible*" role in CloudForms.
 
-* <<Provisioning >>
+* Fork this repository
+* Update the credentials in ansible/roles/ec2_postprovision/defaults/main.yml
+[source,yaml]
+----
+manageiq_user: admin
+manageiq_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          39613462343331363430333461633531316665333332333530393239306662616566363539316565
+          ...
+----
 
-=== Provisioning
+* Log into CloudForms
+** Navigate to Automation / Ansible / Repositories
+*** Add your forked repository
+** Navigate to Automation / Ansible / Credentials
+*** Create a VMware Credential
+*** Create a Machine Credential (be sure to include your vault password else your *manageiq_password* will not be decrypted)
+** Import the sample vmware provisioning service dialog
+*** Make any edits to the service dialogs as needed
+** Create ansible-playbook service catalog item
+** Deploy your VMs!

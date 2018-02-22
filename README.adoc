@@ -17,40 +17,12 @@
 -------------------------------------------------------------------------------
 ////
 
-= CloudForms_VMware_Essentials
+= Welcome to CloudForms_VMware_Essentials
 
-Provision VMware instances via CloudForms with Ansible Automation
-
-Supported ManageIQ/CloudForms Version: *G-release/cf4.6*
+A collection of essential tools for managing VMware environments using ManageIQ/Red Hat CloudForms
 
 IMPORTANT: This repo is subject to frequent changes without warning.
 To avoid issues please **FORK** the repository!
 
-== Instructions
-These instructions assume you have enabled the "Embedded Ansible" server role in CloudForms
-
-* Fork this repository
-* Update the manageiq credentials in roles/vmware_postprovision/defaults/main.yml
-
-[source,yaml]
-----
-manageiq_user: admin
-manageiq_password: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          39613462343331363430333461633531316665333332333530393239306662616566363539316565
-          ...
-----
-
-* Log into CloudForms
-** Navigate to Automation / Ansible / Repositories
-*** Add your forked repository
-** Navigate to Automation / Ansible / Credentials
-*** Create a VMware Credential
-*** Create a Machine Credential (be sure to include your vault password here)
-** Import the service dialogs
-*** Make any edits to the dialogs as needed. I.e. datacenter, cluster, template, etc.
-** Create ansible-playbook service catalog item
-** Deploy your VMs!
-
-== Contribute
-Have an idea and want to help? Fork the repo and submit a pull request.
+== Documentation
+* link:docs/provisioning.adoc[Provisioning]
