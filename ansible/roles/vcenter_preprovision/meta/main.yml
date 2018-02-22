@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: ramrexx
-  description: CloudForms_VMware_Essentials - vmware_vmname
+  description: vcenter_basic_preprovision
   company:
   license: Apache
   issue_tracker_url:
@@ -12,7 +12,5 @@ galaxy_info:
     versions:
       - 7
   categories:
-    - manageiq
     - cloudforms
-    - vmware
 dependencies: []

@@ -22,7 +22,7 @@
     state: "{{ state }}"
   delegate_to: localhost
   with_items: "{{ vm_names }}"
-  register: vmware_created_vms_async
+  register: vcenter_created_vms_async
   async: "{{ async_wait }}"
   poll: "{{ async_poll }}"
 
@@ -31,17 +31,17 @@
   register: vmware_created_vms
   until: vmware_created_vms.finished
   retries: "{{ async_retries }}"
-  with_items: "{{ vmware_created_vms_async.results }}"
+  with_items: "{{ vcenter_created_vms_async.results }}"
 
 - name: Log item.instance.ipv4
   debug:
     var: item.instance.ipv4
-  with_items: "{{ vmware_created_vms.results }}"
+  with_items: "{{ vcenter_created_vms.results }}"
   when: wait_for_ip_address and verbose
 
 - name: "Add new vm ip addresses to vmware_hosts group"
   add_host:
     name: "{{ item.instance.ipv4 }}"
-    groups: vmware_hosts
-  with_items: "{{ vmware_created_vms.results }}"
+    groups: vcenter_hosts
+  with_items: "{{ vcenter_created_vms.results }}"
   when: wait_for_ip_address

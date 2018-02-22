@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: ramrexx
-  description: CloudForms_Essentials - vmware_basic_provision
+  description: vcenter_basic_provision
   company:
   license: Apache
   issue_tracker_url:

@@ -14,7 +14,7 @@
   until: lookup_vms_output.json.subcount > 0
   retries: "{{ max_retries }}"
   delay: "{{ retry_interval }}"
-  with_items: "{{ vmware_created_vms.results }}"
+  with_items: "{{ vcenter_created_vms.results }}"
 
 - name: Log lookup_vms_output.results
   debug:

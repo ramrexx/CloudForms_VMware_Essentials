@@ -1,0 +1,24 @@
+---
+- name: vcenter_basic_provisioning
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+    - role: vcenter_preprovision
+      when: manageiq is defined
+
+    - role: vcenter_vmname
+      when: generate_names is defined and generate_names
+
+    - role: vcenter_basic_provision
+
+    - role: vcenter_postprovision
+      when: vcenter_created_vms is defined and manageiq is defined
+
+- name: Perform tasks on instances
+  hosts: vcenter_hosts
+  #become: true
+  #gather_facts: false
+
+  roles:
+    - role: vcenter_runonce
