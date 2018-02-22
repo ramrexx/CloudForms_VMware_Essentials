@@ -8,6 +8,7 @@
       when: manageiq is defined
 
     - role: vmware_vmname
+      when: generate_names is defined and generate_names
 
     - role: vmware_basic_provision
 
