@@ -20,7 +20,6 @@
     networks: "{{ vm_networks }}"
     disk: "{{ disks | default(omit, true) }}"
     state: "{{ state }}"
-  delegate_to: localhost
   with_items: "{{ vm_names }}"
   register: vcenter_created_vms_async
   async: "{{ async_wait }}"
