@@ -28,8 +28,8 @@
 
 - name: Wait for asynchronous job to complete
   async_status: jid={{ item.ansible_job_id }}
-  register: vmware_created_vms
-  until: vmware_created_vms.finished
+  register: vcenter_created_vms
+  until: vcenter_created_vms.finished
   retries: "{{ async_retries }}"
   with_items: "{{ vcenter_created_vms_async.results }}"
 
@@ -39,7 +39,7 @@
   with_items: "{{ vcenter_created_vms.results }}"
   when: wait_for_ip_address and verbose
 
-- name: "Add new vm ip addresses to vmware_hosts group"
+- name: "Add new vm ip addresses to vcenter_hosts group"
   add_host:
     name: "{{ item.instance.ipv4 }}"
     groups: vcenter_hosts
