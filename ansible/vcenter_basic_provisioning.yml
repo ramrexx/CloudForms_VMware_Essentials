@@ -3,6 +3,9 @@
   hosts: localhost
   gather_facts: false
 
+  var:
+    generate_names: true
+    
   roles:
     - role: vcenter_preprovision
       when: manageiq is defined
