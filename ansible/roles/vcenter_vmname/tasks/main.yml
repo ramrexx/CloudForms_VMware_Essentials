@@ -3,6 +3,12 @@
   set_fact:
     vm_names: "{{ vm_names + [ item ] }}"
   with_sequence: start=1 end="{{ count }}" format="{{ name_format }}"
+  when: vm_name is undefined
+
+- name: Generating VM name(s)
+  set_fact:
+    vm_names: "{{ vm_names + [ vm_name ] }}"
+  when: vm_name is defined
 
 - name: Log item.instance.ipv4
   debug:

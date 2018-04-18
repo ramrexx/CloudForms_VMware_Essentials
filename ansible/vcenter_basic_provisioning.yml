@@ -3,15 +3,11 @@
   hosts: localhost
   gather_facts: false
 
-  pre_tasks:
-    - debug: var=vm_name
-    
   roles:
     - role: vcenter_preprovision
       when: manageiq is defined
 
     - role: vcenter_vmname
-      when: vm_name is not defined
 
     - role: vcenter_basic_provision
 
