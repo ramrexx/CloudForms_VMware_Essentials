@@ -1,0 +1,23 @@
+---
+- name: Ping
+  hosts: all
+  gather_facts: false
+
+  vars:
+    verbose: false
+
+  pre_tasks:
+  - name: logging manageiq object
+    debug:
+      var: manageiq
+    when: manageiq is defined
+
+  tasks:
+  - name: Running ping
+    ping:
+    register: ping_output
+
+  - name: Loging ping_output
+    debug:
+      var: ping_output
+    when: verbose
