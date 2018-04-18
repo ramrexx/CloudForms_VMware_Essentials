@@ -3,15 +3,12 @@
   hosts: localhost
   gather_facts: false
 
-  var:
-    generate_names: true
-    
   roles:
     - role: vcenter_preprovision
       when: manageiq is defined
 
     - role: vcenter_vmname
-      when: generate_names is defined and generate_names
+      when: vm_name is not defined
 
     - role: vcenter_basic_provision
 
